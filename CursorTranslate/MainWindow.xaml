@@ -179,6 +179,9 @@
                     <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,12"/>
                     <CheckBox x:Name="CtrlOnlyToggle" Style="{StaticResource ToggleSwitch}"
                               Content="Only while holding Ctrl" IsChecked="False"/>
+                    <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,12"/>
+                    <CheckBox x:Name="WordOnlyToogle" Style="{StaticResource ToggleSwitch}"
+                              Content="Translate single word" IsChecked="False"/>
                 </StackPanel>
             </Border>
 

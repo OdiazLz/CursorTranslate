@@ -28,7 +28,7 @@ public static class TextUnderCursor
     }
 
     /// <summary>Fast and accurate: asks the app itself for the text under the cursor.</summary>
-    public static string? FromUIAutomation(int x, int y)
+    public static string? FromUIAutomation(int x, int y, bool singleWord)
     {
         try
         {
@@ -39,7 +39,7 @@ public static class TextUnderCursor
             if (element.TryGetCurrentPattern(TextPattern.Pattern, out object pattern))
             {
                 var range = ((TextPattern)pattern).RangeFromPoint(point);
-                range.ExpandToEnclosingUnit(TextUnit.Line);
+                range.ExpandToEnclosingUnit(singleWord ? TextUnit.Word : TextUnit.Line);
                 var text = range.GetText(500).Trim();
                 if (text.Length > 0) return text;
             }
@@ -55,7 +55,7 @@ public static class TextUnderCursor
     }
 
     /// <summary>Fallback: captures a strip of the screen around the cursor and runs Windows OCR on it.</summary>
-    public static async Task<string?> FromOcrAsync(int x, int y, string language)
+    public static async Task<string?> FromOcrAsync(int x, int y, string language, bool singleWord)
     {
         const int width = 600, height = 80;
         using var bmp = new System.Drawing.Bitmap(width, height);
@@ -80,8 +80,20 @@ public static class TextUnderCursor
         // Pick the line closest to the center of the capture (where the cursor is)
         double cx = width / 2.0, cy = height / 2.0, bestDistance = double.MaxValue;
         string? best = null;
+
         foreach (var line in result.Lines)
         {
+            if (singleWord)
+            {
+                foreach (var word in line.Words)
+                {
+                    var r = word.BoundingRect;
+                    double wdx = cx < r.X ? r.X - cx : cx > r.X + r.Width ? cx - (r.X + r.Width) : 0;
+                    double wdy = cy < r.Y ? r.Y - cy : cy > r.Y + r.Height ? cy - (r.Y + r.Height) : 0;
+                    double wd = wdx * wdx + wdy * wdy;
+                    if (wd < bestDistance) { bestDistance = wd; best = word.Text; }
+                }
+            }
             double left = line.Words.Min(w => w.BoundingRect.X);
             double top = line.Words.Min(w => w.BoundingRect.Y);
             double right = line.Words.Max(w => w.BoundingRect.X + w.BoundingRect.Width);
