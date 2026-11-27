@@ -80,16 +80,6 @@ Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
 3. Open `%AppData%\CursorTranslate\settings.json` and paste your key into `"DeepLApiKey"`.
 4. Start the app again. The status bar will show `→ DeepL`.
 
-## Roadmap
-
-- [x] Keep the bubble inside the screen near edges
-- [x] Translate a single word or the whole line (configurable)
-- [x] Save settings between sessions
-- [x] Official translation API with user-provided key (DeepL)
-- [x] Explain technical terms instead of only translating them
-- [ ] Offline translation
-- [ ] Installer
-
 ## Project structure
 
 ```
