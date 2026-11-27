@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace CursorTranslate;
 
@@ -15,6 +16,13 @@ public class Translator
     { Timeout = TimeSpan.FromSeconds(8) };
 
     readonly Dictionary<string, string> cache = new();
+
+    readonly string deepLApiKey;
+
+    public Translator(string deepLApyKey = "")
+    {
+        this.deepLApiKey = deepLApiKey;
+    }
 
     // If Google answers 429 (Too Many Requests), let it rest for a while
     DateTime googleBlockedUntil = DateTime.MinValue;
@@ -54,7 +62,21 @@ public class Translator
 
         string? result = null;
 
-        if (DateTime.Now >= googleBlockedUntil)
+        string? deepLError = null;
+
+        if (!string.IsNullOrWhiteSpace(deepLApiKey))
+        {
+            try
+            {
+                result = await TranslateWithDeepLAsync(text, source, target);
+                LastService = "DeepL";
+            }catch (Exception ex)
+            {
+                deepLError = ex.Message;
+            }
+        }
+
+        if (result == null && DateTime.Now >= googleBlockedUntil)
         {
             try
             {
@@ -74,6 +96,7 @@ public class Translator
             LastService = "MyMemory (Google paused)";
         }
 
+        if (deepLError != null) LastService += $" (DeepL failed: {deepLError})";
         if (string.IsNullOrWhiteSpace(result)) return text;
         cache[key] = result;
         return result;
@@ -118,5 +141,30 @@ public class Translator
             return WebUtility.HtmlDecode(translated.GetString());
         }
         return null;
+    }
+
+    async Task<string?> TranslateWithDeepLAsync(string text, string source, string target)
+    {
+        var host = deepLApiKey.EndsWith(":fx") ? "https://api-free.deepl.com" : "https://api.deepl.com";
+
+        var body = new Dictionary<string, object>
+        {
+            ["text"] = new[] { text },
+            ["target_lang"] = target == "en" ? "EN_US" : target.ToUpperInvariant()
+        };
+        if (source != "auto") body["source_lang"] = source.ToUpperInvariant();
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, $"{host}/v2/translate")
+        {
+            Content = JsonContent.Create(body)
+        };
+        request.Headers.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("DeepL-Auth-Key", deepLApiKey);
+
+        using var response = await http.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        using var doc = JsonDocument.Parse(await response.Content.ReadAsStreamAsync());
+        return doc.RootElement.GetProperty("translations")[0].GetProperty("text").GetString();
     }
 }
