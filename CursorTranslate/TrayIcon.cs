@@ -26,7 +26,9 @@ public sealed class TrayIcon : IDisposable
 
         icon = new Forms.NotifyIcon
         {
-            Icon = CreateIcon(),
+            Icon = new Drawing.Icon (
+                System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Assets/app.ico")).Stream,
+                Forms.SystemInformation.SmallIconSize),
             Text = "Cursor Translate (enabled)",
             ContextMenuStrip = menu,
             Visible = true
@@ -43,7 +45,6 @@ public sealed class TrayIcon : IDisposable
     public void Notify(string title, string message) =>
         icon.ShowBalloonTip(1500, title, message, Forms.ToolTipIcon.None);
 
-    // Draws the blue "Aa" icon in code, so no .ico file is needed
     static Drawing.Icon CreateIcon()
     {
         using var bmp = new Drawing.Bitmap(32, 32);

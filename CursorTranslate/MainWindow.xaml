@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Cursor Translate" Width="380" SizeToContent="Height"
+        Icon="Assets/app.ico"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
@@ -158,9 +159,8 @@
             <!-- Title bar -->
             <Grid Height="52" Background="Transparent" MouseLeftButtonDown="TitleBar_MouseDown">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0,0,0">
-                    <Border Width="28" Height="28" CornerRadius="8" Background="{StaticResource AccentBrush}">
-                        <TextBlock Text="Aa" Foreground="White" FontWeight="Bold" FontSize="13"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Width="28" Height="28" CornerRadius="8">
+                        <Image Source="Assets/app.ico" Width="28" Height="28"/>
                     </Border>
                     <TextBlock Text="Cursor Translate" Foreground="{StaticResource TextBrush}"
                                FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" VerticalAlignment="Center"/>
