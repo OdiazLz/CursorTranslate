@@ -8,15 +8,15 @@ A lightweight Windows tool that translates any text under your mouse cursor — 
 
 - **Hover to translate** in browsers, desktop apps, menus, buttons, PDFs and more.
 - **Two ways to read text:**
-  - **UI Automation** — asks the app itself for the text under the cursor (fast and exact).
-  - **Windows OCR** — fallback for images, games and apps that don't expose their text.
+  - **UI Automation** , asks the app itself for the text under the cursor (fast and exact).
+  - **Windows OCR**, fallback for images, games and apps that don't expose their text.
 - **Floating bubble** next to the cursor with the translation and the original text.
-- **Ctrl mode (optional)** — only translate while holding `Ctrl`.
-- **Global hotkey** — `Ctrl + Alt + T` toggles the translator on and off from anywhere.
-- **System tray** — runs quietly in the tray (Open / Enabled / Exit).
-- **Rate-limit friendly** — caching, request throttling, and an automatic fallback service if the main one is temporarily blocked.
+- **Ctrl mode (Active)**, only translate while holding `Ctrl`.
+- **Global hotkey**, `Ctrl + Alt + T` toggles the translator on and off from anywhere.
+- **System tray**, runs quietly in the tray (Open / Enabled / Exit).
+- **Rate-limit friendly**, caching, request throttling, and an automatic fallback service if the main one is temporarily blocked.
 - **Modern dark UI** with toggle switches.
-- **Translation modes** — translate the single word, the whole sentence or the whole line under the cursor.
+- **Translation modes**, translate the single word, the whole sentence or the whole line under the cursor.
 - **Remembers your settings** - languages and options are saved between sessions.
 
 ## Download
@@ -60,7 +60,6 @@ Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
 ## Usage
 
 | Action | How |
-|---|---|
 | Translate | Rest the mouse over any text |
 | Ctrl-only mode | Turn on **Only while holding Ctrl** |
 | Toggle on/off | `Ctrl + Alt + T` or the tray menu |
@@ -80,17 +79,6 @@ Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
 3. Open `%AppData%\CursorTranslate\settings.json` and paste your key into `"DeepLApiKey"`.
 4. Start the app again. The status bar will show `→ DeepL`.
 
-## Project structure
-
-```
-CursorTranslate/
-├── MainWindow.xaml(.cs)     # Main window, main loop, hotkey, tray wiring
-├── TooltipWindow.xaml(.cs)  # Floating translation bubble
-├── TextUnderCursor.cs       # UI Automation + OCR text extraction
-├── Translator.cs            # Translation services, cache, rate limiting
-├── TrayIcon.cs              # System tray icon and menu
-└── NativeMethods.cs         # Win32 interop
-```
 
 ## License
 
