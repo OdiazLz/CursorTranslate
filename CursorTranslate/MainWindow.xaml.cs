@@ -9,10 +9,10 @@ namespace CursorTranslate;
 
 public partial class MainWindow : Window
 {
-    const int PollIntervalMs = 50;      // how often the mouse position is checked
-    const int RestDelayMs = 250;        // how long the mouse must rest (Ctrl mode)
-    const int RestDelayNoCtrlMs = 450;  // longer without Ctrl, to avoid too many requests
-    const int JitterTolerancePx = 3;    // tiny mouse movements don't count
+    const int PollIntervalMs = 50; 
+    const int RestDelayMs = 250;  
+    const int RestDelayNoCtrlMs = 450;
+    const int JitterTolerancePx = 3; 
     const int HotkeyId = 1;
 
     readonly DispatcherTimer timer = new() { Interval = TimeSpan.FromMilliseconds(PollIntervalMs) };
@@ -46,19 +46,16 @@ public partial class MainWindow : Window
         _ = WarmUpAsync();
     }
 
-    // Opens the connection to the translation service and initializes UI Automation
-    // so the first real translation isn't slow
     async Task WarmUpAsync()
     {
         try
         {
             await translator.TranslateAsync("hello", "en", "es");
-            await Task.Run(() => TextUnderCursor.FromUIAutomation(0, 0));
+            await Task.Run(() => TextUnderCursor.FromUIAutomation(0, 0, false));
         }
         catch { }
     }
 
-    // ---------- Window chrome ----------
 
     void TitleBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
@@ -76,7 +73,6 @@ public partial class MainWindow : Window
         Activate();
     }
 
-    // The close button sends the app to the tray instead of exiting
     void OnClosing(object? sender, CancelEventArgs e)
     {
         if (exiting) return;
@@ -92,8 +88,6 @@ public partial class MainWindow : Window
         tray.Dispose();
         Application.Current.Shutdown();
     }
-
-    // ---------- Global hotkey (Ctrl+Alt+T) ----------
 
     void RegisterHotkey()
     {
@@ -117,7 +111,6 @@ public partial class MainWindow : Window
         return IntPtr.Zero;
     }
 
-    // ---------- Main loop ----------
 
     static string GetSelectedTag(ComboBox combo) => (string)((ComboBoxItem)combo.SelectedItem).Tag;
 
@@ -131,7 +124,6 @@ public partial class MainWindow : Window
         bool ctrlDown = (NativeMethods.GetAsyncKeyState(NativeMethods.VK_CONTROL) & 0x8000) != 0;
         if (ctrlOnly && !ctrlDown) { HideTooltip(); alreadyProcessed = false; return; }
 
-        // Don't translate our own window
         if (IsMouseOver) { HideTooltip(); return; }
 
         NativeMethods.GetCursorPos(out var p);
@@ -154,14 +146,15 @@ public partial class MainWindow : Window
         {
             int x = p.X, y = p.Y;
             string source = GetSelectedTag(SourceLanguage), target = GetSelectedTag(TargetLanguage);
+            bool singleWord = WordOnlyToogle.IsChecked == true;
 
-            string? text = await Task.Run(() => TextUnderCursor.FromUIAutomation(x, y));
+            string? text = await Task.Run(() => TextUnderCursor.FromUIAutomation(x, y, singleWord));
             string method = "UI Automation";
 
             if (string.IsNullOrWhiteSpace(text))
             {
                 string ocrLanguage = source == "en" ? "en-US" : source == "es" ? "es-MX" : "auto";
-                text = await Task.Run(() => TextUnderCursor.FromOcrAsync(x, y, ocrLanguage));
+                text = await Task.Run(() => TextUnderCursor.FromOcrAsync(x, y, ocrLanguage, singleWord));
                 method = "OCR";
             }
             long readMs = stopwatch.ElapsedMilliseconds;
@@ -172,7 +165,6 @@ public partial class MainWindow : Window
                 return;
             }
 
-            // Show the bubble right away while the translation arrives
             if (!MouseMoved(x, y)) tooltip.ShowAt("Translating…", text, x, y);
 
             var translation = await translator.TranslateAsync(text, source, target);
