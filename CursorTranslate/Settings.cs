@@ -12,7 +12,7 @@ public class Settings
 {
     public bool Enabled { get; set; } = true;
     public bool CtrlOnly { get; set; } = false;
-    public bool SingleWord { get; set; } = false;
+    public string Mode { get; set; } = "sentence";
     public string SourceLanguage { get; set; } = "en";
     public string TargetLanguage { get; set; } = "es";
     public string DeepLApiKey { get; set; } = "";

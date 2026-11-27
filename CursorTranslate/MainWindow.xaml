@@ -179,15 +179,18 @@
                     <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,12"/>
                     <CheckBox x:Name="CtrlOnlyToggle" Style="{StaticResource ToggleSwitch}"
                               Content="Only while holding Ctrl" IsChecked="False"/>
-                    <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,12"/>
-                    <CheckBox x:Name="WordOnlyToogle" Style="{StaticResource ToggleSwitch}"
-                              Content="Translate single word" IsChecked="False"/>
                 </StackPanel>
             </Border>
 
             <!-- Languages -->
             <Border Background="{StaticResource CardBrush}" CornerRadius="10" Padding="14,12" Margin="18,12,18,0">
                 <StackPanel>
+                    <TextBlock Text="TRANSLATE" Style="{StaticResource SectionLabel}"/>
+                    <ComboBox x:Name="ModeSelector" SelectedIndex="1" Margin="0,0,0,14">
+                        <ComboBoxItem Content="Single word" Tag="word"/>
+                        <ComboBoxItem Content="Whole sentence" Tag="sentence"/>
+                        <ComboBoxItem Content="Whole line" Tag="line"/>
+                    </ComboBox>
                     <TextBlock Text="TRANSLATE FROM" Style="{StaticResource SectionLabel}"/>
                     <ComboBox x:Name="SourceLanguage" SelectedIndex="0">
                         <ComboBoxItem Content="English" Tag="en"/>

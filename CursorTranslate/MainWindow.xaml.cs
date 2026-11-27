@@ -33,7 +33,7 @@ public partial class MainWindow : Window
 
         EnabledToggle.IsChecked = settings.Enabled;
         CtrlOnlyToggle.IsChecked = settings.CtrlOnly;
-        WordOnlyToogle.IsChecked = settings.SingleWord;
+        SelectByTag(ModeSelector, settings.Mode);
         SelectByTag(SourceLanguage, settings.SourceLanguage);
         SelectByTag(TargetLanguage, settings.TargetLanguage);
 
@@ -47,7 +47,7 @@ public partial class MainWindow : Window
 
         tray.SetEnabled(settings.Enabled);
 
-        foreach (var toggle in new[] { EnabledToggle, CtrlOnlyToggle, WordOnlyToogle })
+        foreach (var toggle in new[] { EnabledToggle, CtrlOnlyToggle })
         {
             toggle.Checked += (_, _) => SaveSettings();
             toggle.Unchecked += (_, _) => SaveSettings();
@@ -55,6 +55,7 @@ public partial class MainWindow : Window
 
         SourceLanguage.SelectionChanged += (_, _) => SaveSettings();
         TargetLanguage.SelectionChanged += (_, _) => SaveSettings();
+        ModeSelector.SelectionChanged += (_, _) => SaveSettings();
 
         SourceInitialized += (_, _) => RegisterHotkey();
         Closing += OnClosing;
@@ -70,7 +71,7 @@ public partial class MainWindow : Window
         try
         {
             await translator.TranslateAsync("hello", "en", "es");
-            await Task.Run(() => TextUnderCursor.FromUIAutomation(0, 0, false));
+            await Task.Run(() => TextUnderCursor.FromUIAutomation(0, 0, TextMode.Line));
         }
         catch { }
     }
@@ -133,6 +134,13 @@ public partial class MainWindow : Window
 
     static string GetSelectedTag(ComboBox combo) => (string)((ComboBoxItem)combo.SelectedItem).Tag;
 
+    static TextMode ParseMode(string tag) => tag switch
+    {
+        "word" => TextMode.Word,
+        "line" => TextMode.Line,
+        _ => TextMode.Sentence
+    };
+
     static void SelectByTag (ComboBox combo, string tag)
     {
         foreach (ComboBoxItem item in combo.Items)
@@ -143,7 +151,7 @@ public partial class MainWindow : Window
     {
         settings.Enabled = EnabledToggle.IsChecked == true;
         settings.CtrlOnly = CtrlOnlyToggle.IsChecked == true;
-        settings.SingleWord = WordOnlyToogle.IsChecked == true;
+        settings.Mode = GetSelectedTag(ModeSelector);
         settings.SourceLanguage = GetSelectedTag(SourceLanguage);
         settings.TargetLanguage = GetSelectedTag(TargetLanguage);
         settings.Save();
@@ -181,15 +189,15 @@ public partial class MainWindow : Window
         {
             int x = p.X, y = p.Y;
             string source = GetSelectedTag(SourceLanguage), target = GetSelectedTag(TargetLanguage);
-            bool singleWord = WordOnlyToogle.IsChecked == true;
+            var mode = ParseMode(GetSelectedTag(ModeSelector));
 
-            string? text = await Task.Run(() => TextUnderCursor.FromUIAutomation(x, y, singleWord));
+            string? text = await Task.Run(() => TextUnderCursor.FromUIAutomation(x, y, mode));
             string method = "UI Automation";
 
             if (string.IsNullOrWhiteSpace(text))
             {
                 string ocrLanguage = source == "en" ? "en-US" : source == "es" ? "es-MX" : "auto";
-                text = await Task.Run(() => TextUnderCursor.FromOcrAsync(x, y, ocrLanguage, singleWord));
+                text = await Task.Run(() => TextUnderCursor.FromOcrAsync(x, y, ocrLanguage, mode));
                 method = "OCR";
             }
             long readMs = stopwatch.ElapsedMilliseconds;
