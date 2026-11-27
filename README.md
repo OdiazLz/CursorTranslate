@@ -17,6 +17,11 @@ A lightweight Windows tool that translates any text under your mouse cursor — 
 - **Single-Word mode** - translate just the word under the cursor or the whole line
 - **Remembers your settings** - languages and options are saved between
 
+## DownLoad
+
+Get the latest version from the [Releases page](https://github.com/OdiazLz/CursorTranslate/releases/latest): download the `.zip`, extract it and run `CursorTranslate.exe`.
+> Windows SmartScreen may warn you because the app isn't code-signed yet. Click **More info → Run anyway**.
+
 ## How it works
 
 1. A timer checks the mouse position every 50 ms.
@@ -76,7 +81,7 @@ Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
 - [x] Translate a single word or the whole line (configurable)
 - [x] Save settings between sessions
 - [x] Official translation API with user-provided key (DeepL)
-- [ ] Explain technical terms instead of only translating them
+- [x] Explain technical terms instead of only translating them
 - [ ] Offline translation
 - [ ] Installer
 
