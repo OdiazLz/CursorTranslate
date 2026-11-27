@@ -19,7 +19,7 @@ public class Translator
 
     readonly string deepLApiKey;
 
-    public Translator(string deepLApyKey = "")
+    public Translator(string deepLApiKey = "")
     {
         this.deepLApiKey = deepLApiKey;
     }
