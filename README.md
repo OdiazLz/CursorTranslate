@@ -1,6 +1,6 @@
 # Cursor Translate
 
-A lightweight Windows tool that translates any text under your mouse cursor in **any app** — just by resting the mouse over it. No selecting, no copy-pasting, no switching windows.
+A lightweight Windows tool that translates any text under your mouse cursor in **any app** just by resting the mouse over it. No selecting, no copy-pasting, no switching windows.
 
 ![Cursor Translate demo](docs/demo.gif)
 
@@ -59,9 +59,9 @@ Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
 
 ## Translation services
 
-1. **DeepL API** — used when you add your own API key (the DeepL API Free plan includes 500,000 characters per month).
-2. **Google Translate (unofficial endpoint)** — no key needed, but it may rate-limit you (HTTP 429) with heavy use.
-3. **MyMemory** — free fallback used automatically while Google is rate-limited.
+1. **DeepL API** used when you add your own API key (the DeepL API Free plan includes 500,000 characters per month).
+2. **Google Translate (unofficial endpoint)** no key needed, but it may rate-limit you (HTTP 429) with heavy use.
+3. **MyMemory** free fallback used automatically while Google is rate-limited.
 
 ### Setting up DeepL
 
