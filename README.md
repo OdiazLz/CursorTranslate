@@ -64,7 +64,7 @@ Support for an official API (e.g. DeepL API Free) is planned.
 
 ## Roadmap
 
-- [ ] Keep the bubble inside the screen near edges
+- [x] Keep the bubble inside the screen near edges
 - [ ] Translate a single word or the whole line (configurable)
 - [ ] Save settings between sessions
 - [ ] Official translation API with user-provided key (DeepL)
