@@ -16,7 +16,7 @@ A lightweight Windows tool that translates any text under your mouse cursor — 
 - **System tray** — runs quietly in the tray (Open / Enabled / Exit).
 - **Rate-limit friendly** — caching, request throttling, and an automatic fallback service if the main one is temporarily blocked.
 - **Modern dark UI** with toggle switches.
-- **Single-Word mode** - translate just the word under the cursor or the whole line
+- **Translation modes** — translate the single word, the whole sentence or the whole line under the cursor.
 - **Remembers your settings** - languages and options are saved between sessions.
 
 ## Download
