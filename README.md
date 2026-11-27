@@ -1,6 +1,6 @@
 # Cursor Translate
 
-A lightweight Windows tool that translates any text under your mouse cursor — in **any app** — just by resting the mouse over it. No selecting, no copy-pasting, no switching windows.
+A lightweight Windows tool that translates any text under your mouse cursor in **any app** — just by resting the mouse over it. No selecting, no copy-pasting, no switching windows.
 
 ![Cursor Translate demo](docs/demo.gif)
 
@@ -11,7 +11,7 @@ A lightweight Windows tool that translates any text under your mouse cursor — 
   - **UI Automation** , asks the app itself for the text under the cursor (fast and exact).
   - **Windows OCR**, fallback for images, games and apps that don't expose their text.
 - **Floating bubble** next to the cursor with the translation and the original text.
-- **Ctrl mode (Active)**, only translate while holding `Ctrl`.
+- **Ctrl mode (Optional)**, only translate while holding `Ctrl`.
 - **Global hotkey**, `Ctrl + Alt + T` toggles the translator on and off from anywhere.
 - **System tray**, runs quietly in the tray (Open / Enabled / Exit).
 - **Rate-limit friendly**, caching, request throttling, and an automatic fallback service if the main one is temporarily blocked.
@@ -56,15 +56,6 @@ dotnet run --project CursorTranslate
 ```
 
 Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
-
-## Usage
-
-| Action | How |
-| Translate | Rest the mouse over any text |
-| Ctrl-only mode | Turn on **Only while holding Ctrl** |
-| Toggle on/off | `Ctrl + Alt + T` or the tray menu |
-| Open the window | Double-click the tray icon |
-| Exit | Right-click the tray icon → **Exit** |
 
 ## Translation services
 
