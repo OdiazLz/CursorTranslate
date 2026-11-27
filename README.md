@@ -15,11 +15,14 @@ A lightweight Windows tool that translates any text under your mouse cursor — 
 - **Rate-limit friendly** — caching, request throttling, and an automatic fallback service if the main one is temporarily blocked.
 - **Modern dark UI** with toggle switches.
 - **Single-Word mode** - translate just the word under the cursor or the whole line
-- **Remembers your settings** - languages and options are saved between
+- **Remembers your settings** - languages and options are saved between sessions.
 
-## DownLoad
+## Download
 
 Get the latest version from the [Releases page](https://github.com/OdiazLz/CursorTranslate/releases/latest): download the `.zip`, extract it and run `CursorTranslate.exe`.
+
+Requires Windows 10 (build 19041+) or Windows 11. No .NET install needed.
+
 > Windows SmartScreen may warn you because the app isn't code-signed yet. Click **More info → Run anyway**.
 
 ## How it works
@@ -28,7 +31,7 @@ Get the latest version from the [Releases page](https://github.com/OdiazLz/Curso
 2. When the mouse rests on something, the app reads the text under it with **UI Automation**; if nothing comes back, it captures a small strip of the screen and runs **Windows OCR**, picking the line closest to the cursor.
 3. The text is sent to a translation service and shown in a click-through, non-focus-stealing bubble.
 
-## Requirements
+## Requirements (to build from source)
 
 - Windows 10 (version 2004 / build 19041) or Windows 11
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
