@@ -15,6 +15,7 @@ A lightweight Windows tool that translates any text under your mouse cursor — 
 - **Rate-limit friendly** — caching, request throttling, and an automatic fallback service if the main one is temporarily blocked.
 - **Modern dark UI** with toggle switches.
 - **Single-Word mode** - translate just the word under the cursor or the whole line
+- **Remembers your settings** - languages and options are saved between
 
 ## How it works
 
@@ -67,7 +68,7 @@ Support for an official API (e.g. DeepL API Free) is planned.
 
 - [x] Keep the bubble inside the screen near edges
 - [x] Translate a single word or the whole line (configurable)
-- [ ] Save settings between sessions
+- [x] Save settings between sessions
 - [ ] Official translation API with user-provided key (DeepL)
 - [ ] Explain technical terms instead of only translating them
 - [ ] Offline translation

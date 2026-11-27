@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     readonly TooltipWindow tooltip;
     readonly Translator translator = new();
     readonly TrayIcon tray;
+    readonly Settings settings = Settings.Load();
 
     NativeMethods.POINT lastPosition;
     DateTime restingSince = DateTime.Now;
@@ -29,6 +30,12 @@ public partial class MainWindow : Window
         InitializeComponent();
         tooltip = new TooltipWindow();
 
+        EnabledToggle.IsChecked = settings.Enabled;
+        CtrlOnlyToggle.IsChecked = settings.CtrlOnly;
+        WordOnlyToogle.IsChecked = settings.SingleWord;
+        SelectByTag(SourceLanguage, settings.SourceLanguage);
+        SelectByTag(TargetLanguage, settings.TargetLanguage);
+
         tray = new TrayIcon();
         tray.OpenRequested += ShowMainWindow;
         tray.EnabledChanged += enabled => EnabledToggle.IsChecked = enabled;
@@ -36,6 +43,17 @@ public partial class MainWindow : Window
 
         EnabledToggle.Checked += (_, _) => tray.SetEnabled(true);
         EnabledToggle.Unchecked += (_, _) => tray.SetEnabled(false);
+
+        tray.SetEnabled(settings.Enabled);
+
+        foreach (var toggle in new[] { EnabledToggle, CtrlOnlyToggle, WordOnlyToogle })
+        {
+            toggle.Checked += (_, _) => SaveSettings();
+            toggle.Unchecked += (_, _) => SaveSettings();
+        }
+
+        SourceLanguage.SelectionChanged += (_, _) => SaveSettings();
+        TargetLanguage.SelectionChanged += (_, _) => SaveSettings();
 
         SourceInitialized += (_, _) => RegisterHotkey();
         Closing += OnClosing;
@@ -113,6 +131,22 @@ public partial class MainWindow : Window
 
 
     static string GetSelectedTag(ComboBox combo) => (string)((ComboBoxItem)combo.SelectedItem).Tag;
+
+    static void SelectByTag (ComboBox combo, string tag)
+    {
+        foreach (ComboBoxItem item in combo.Items)
+            if ((string)item.Tag == tag) { combo.SelectedItem = item; return; }
+    }
+
+    void SaveSettings()
+    {
+        settings.Enabled = EnabledToggle.IsChecked == true;
+        settings.CtrlOnly = CtrlOnlyToggle.IsChecked == true;
+        settings.SingleWord = WordOnlyToogle.IsChecked == true;
+        settings.SourceLanguage = GetSelectedTag(SourceLanguage);
+        settings.TargetLanguage = GetSelectedTag(TargetLanguage);
+        settings.Save();
+    }
 
     void HideTooltip() { if (tooltip.IsVisible) tooltip.Hide(); }
 
