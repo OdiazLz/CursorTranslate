@@ -17,7 +17,7 @@ public partial class MainWindow : Window
 
     readonly DispatcherTimer timer = new() { Interval = TimeSpan.FromMilliseconds(PollIntervalMs) };
     readonly TooltipWindow tooltip;
-    readonly Translator translator = new();
+    readonly Translator translator;
     readonly TrayIcon tray;
     readonly Settings settings = Settings.Load();
 
@@ -28,6 +28,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        translator = new Translator(settings.DeepLApiKey);
         tooltip = new TooltipWindow();
 
         EnabledToggle.IsChecked = settings.Enabled;

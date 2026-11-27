@@ -59,17 +59,23 @@ Or open `CursorTranslate.sln` in Visual Studio and press **F5**.
 
 ## Translation services
 
-- **Google Translate (unofficial endpoint)** — used by default for prototyping. It has no API key and may rate-limit you (HTTP 429) with heavy use.
-- **MyMemory** — free fallback used automatically while Google is rate-limited.
+1. **DeepL API** — used when you add your own API key (the DeepL API Free plan includes 500,000 characters per month).
+2. **Google Translate (unofficial endpoint)** — no key needed, but it may rate-limit you (HTTP 429) with heavy use.
+3. **MyMemory** — free fallback used automatically while Google is rate-limited.
 
-Support for an official API (e.g. DeepL API Free) is planned.
+### Setting up DeepL
+
+1. Create a free account at [DeepL API](https://www.deepl.com/pro-api) and copy your API key.
+2. Run Cursor Translate once, then exit it from the tray menu.
+3. Open `%AppData%\CursorTranslate\settings.json` and paste your key into `"DeepLApiKey"`.
+4. Start the app again. The status bar will show `→ DeepL`.
 
 ## Roadmap
 
 - [x] Keep the bubble inside the screen near edges
 - [x] Translate a single word or the whole line (configurable)
 - [x] Save settings between sessions
-- [ ] Official translation API with user-provided key (DeepL)
+- [x] Official translation API with user-provided key (DeepL)
 - [ ] Explain technical terms instead of only translating them
 - [ ] Offline translation
 - [ ] Installer
