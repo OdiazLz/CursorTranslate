@@ -2,6 +2,8 @@
 
 A lightweight Windows tool that translates any text under your mouse cursor — in **any app** — just by resting the mouse over it. No selecting, no copy-pasting, no switching windows.
 
+![Cursor Translate demo](docs/demo.gif)
+
 ## Features
 
 - **Hover to translate** in browsers, desktop apps, menus, buttons, PDFs and more.
