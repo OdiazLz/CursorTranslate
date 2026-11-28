@@ -12,7 +12,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <RootNamespace>CursorTranslate</RootNamespace>
     <AssemblyName>CursorTranslate</AssemblyName>
-	<Version>0.2.1</Version>
+	<Version>0.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
