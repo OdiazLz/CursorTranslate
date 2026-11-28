@@ -150,7 +150,7 @@ public class Translator
         var body = new Dictionary<string, object>
         {
             ["text"] = new[] { text },
-            ["target_lang"] = target == "en" ? "EN_US" : target.ToUpperInvariant()
+            ["target_lang"] = ToDeepLTarget(target)
         };
         if (source != "auto") body["source_lang"] = source.ToUpperInvariant();
 
@@ -167,4 +167,11 @@ public class Translator
         using var doc = JsonDocument.Parse(await response.Content.ReadAsStreamAsync());
         return doc.RootElement.GetProperty("translations")[0].GetProperty("text").GetString();
     }
+
+    static string ToDeepLTarget(string target) => target switch
+    {
+        "en" => "EN-US",
+        "pt" => "PT-BR",
+        _ => target.ToUpperInvariant()
+    };
 }
