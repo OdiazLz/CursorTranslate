@@ -36,8 +36,8 @@ Requires Windows 10 (build 19041+) or Windows 11. No .NET install needed.
 ## Requirements (to build from source)
 
 - Windows 10 (version 2004 / build 19041) or Windows 11
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Visual Studio 2022 with the **.NET desktop development** workload (or the `dotnet` CLI)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- Visual Studio 2026 with the **.NET desktop development** workload (or the `dotnet` CLI)
 
 ### OCR language packs
 
